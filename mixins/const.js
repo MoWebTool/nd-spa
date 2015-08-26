@@ -18,11 +18,6 @@ module.exports = function(util) {
   // 压测
   util.PRESSURE = 16;
 
-  /**
-   * @constant {string} SITE_TITLE
-   */
-  util.SITE_TITLE = '<%= description %>';
-
   util.LOC_PROTOCOL = location.protocol;
   util.LOC_HOST = location.host;
   // host === hostname:port
