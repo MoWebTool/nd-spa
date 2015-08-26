@@ -1,13 +1,13 @@
 {
-  "单位：": "",
-  "接口列表": "",
-  "日志列表": "",
-  "未知错误": "",
-  "权限管理": "",
-  "网龙网络公司 版权所有": "",
-  "角色列表": "",
-  "请求被拒绝": "",
-  "返回主页": "",
-  "退出": "",
-  "部门：": ""
+  "单位：": "Unit: ",
+  "接口列表": "API List",
+  "日志列表": "Log List",
+  "未知错误": "Unknown Error",
+  "权限管理": "RBAC",
+  "网龙网络公司 版权所有": "Copyright © NetDragon Websoft Inc. All Rights Reserved",
+  "角色列表": "Role List",
+  "请求被拒绝": "Request denied",
+  "返回主页": "Homepage",
+  "退出": "Logout",
+  "部门：": "Dept: "
 }
