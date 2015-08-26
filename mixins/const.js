@@ -176,7 +176,7 @@ module.exports = function(util) {
         route: 'rbac/log',
         title: '日志列表',
         // 用于权限控制
-        level: '=9'
+        level: '=9|=8'
       }]
     });
   }
