@@ -2,20 +2,35 @@
 
 module.exports = function(util) {
 
-  var routes = util.ROUTES.ASIDE
-    .map(function(route) {
-      return route.routes;
-    })
-    .reduce(function(route1, route2) {
-      return route1.concat(route2);
-    });
+  var routes;
+
+  function checkInit() {
+    if (routes) {
+      return;
+    }
+
+    routes = {};
+
+    Object.keys(util.ROUTES)
+      .reduce(function(a, b) {
+        return util.ROUTES[a].concat(util.ROUTES[b]);
+      })
+      .map(function(r) {
+        return r.routes || [r];
+      })
+      .reduce(function(a, b) {
+        return (a.routes || a).concat(b.routes || b);
+      })
+      .forEach(function(r) {
+        if (r.hasOwnProperty('level')) {
+          routes[r.route] = [r.level, r.module];
+        }
+      });
+  }
 
   function hasAuth(entry) {
-    entry = routes.filter(function(route) {
-      return route.route === entry;
-    });
-
-    return !entry.length || util.auth.hasAuth(entry[0].level, entry[0].module);
+    checkInit();
+    return !routes.hasOwnProperty(entry) || util.auth.hasAuth(routes[entry][0], routes[entry][1]);
   }
 
   // app/**/index 提供的回收函数
