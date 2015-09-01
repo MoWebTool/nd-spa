@@ -6,10 +6,10 @@ var RESTful = require('nd-restful');
 var ajax = require('nd-ajax');
 
 module.exports = function(util) {
-  var encode = window.encodeURIComponent;
+
   function addParam(url, params) {
     var arr = Object.keys(params).map(function(key) {
-      return encode(key) + '=' + encode(params[key]);
+      return key + '=' + params[key];
     }).join('&');
 
     if (!arr) {
@@ -167,7 +167,7 @@ module.exports = function(util) {
       var dispatcher = JSON.stringify({
         'host': baseUri[0].replace(/^(?:https?:)?\/\//i, ''),
         'ver': baseUri[1],
-        'api': api,
+        'api': encodeURIComponent(api),
         'var': replacement,
         'module': this.get('module')
       });
@@ -180,22 +180,18 @@ module.exports = function(util) {
     },
 
     _mergeOpt: function(options) {
-      if (!options.done) {
-        options.done = this.get('done');
-      }
+      var value;
 
-      if (!options.fail) {
-        options.fail = this.get('fail');
-      }
-
-      if (!options.always) {
-        options.always = this.get('always');
-      }
-
-      if (!options.baseUri) {
-        // copy
-        options.baseUri = this.get('baseUri').slice();
-      }
+      [
+        'done', 'fail', 'always',
+        'baseUri', 'module', 'uriVar',
+        'params', 'additional', 'replacement'
+      ]
+      .forEach(function(key) {
+        if (!(key in options) && (value = this.get(key))) {
+          options[key] = Array.isArray(value) ? value.slice() : value;
+        }
+      }, this);
     }
   });
 
