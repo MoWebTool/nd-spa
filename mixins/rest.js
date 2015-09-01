@@ -6,10 +6,10 @@ var RESTful = require('nd-restful');
 var ajax = require('nd-ajax');
 
 module.exports = function(util) {
-
+  var encode = window.encodeURIComponent;
   function addParam(url, params) {
     var arr = Object.keys(params).map(function(key) {
-      return key + '=' + params[key];
+      return encode(key) + '=' + encode(params[key]);
     }).join('&');
 
     if (!arr) {
