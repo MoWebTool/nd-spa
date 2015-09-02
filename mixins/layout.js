@@ -13,7 +13,7 @@ module.exports = function(util) {
   document.title = (document.title + ' ' + util.SITE_TITLE).trim();
 
   util.layout = {
-    render: function(partial, model) {
+    render: function(partial, model, isLogin) {
       if (partial) {
         if (!Array.isArray(partial)) {
           if (partial.charAt(0) === '!') {
@@ -29,13 +29,18 @@ module.exports = function(util) {
         partial = Object.keys(partials);
       }
 
+      if (typeof isLogin === 'undefined') {
+        isLogin = util.auth.isLogin();
+      }
+
       partial.forEach(function(key) {
-        partials[key].render(util, model);
+        partials[key].render(util, model, isLogin);
       });
     }
   };
 
   // render layouts except aside
-  util.layout.render('!aside');
+  // util.layout.render('!aside');
+  setTimeout(util.layout.render, 0, '!aside');
 
 };

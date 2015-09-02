@@ -4,7 +4,6 @@ var Router = require('nd-router');
 
 module.exports = function(util) {
 
-  var firstIn = true;
   var isLogin = util.auth.isLogin();
 
   function updateSidebar(id) {
@@ -20,15 +19,11 @@ module.exports = function(util) {
 
       // 重新渲染
       util.layout.render();
+    } else if (_isLogin && id === 'login') {
+      util.layout.render(null, null, (isLogin = false));
     }
 
-    // 避免 use 先于 routes 就位
-    if (firstIn) {
-      firstIn = false;
-      setTimeout(util.use, 0, id, params);
-    } else {
-      util.use(id, params);
-    }
+    util.use(id, params);
   }
 
   var route = util.route = new Router();
