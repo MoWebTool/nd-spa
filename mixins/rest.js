@@ -185,6 +185,7 @@ module.exports = function(util) {
       [
         'done', 'fail', 'always',
         'baseUri', 'module', 'uriVar',
+        'uri', 'data',
         'params', 'additional', 'replacement'
       ]
       .forEach(function(key) {
