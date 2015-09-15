@@ -2,47 +2,64 @@
 
 module.exports = function(util) {
 
-  var routes = util.ROUTES.ASIDE
-    .map(function(route) {
-      return route.routes;
-    })
-    .reduce(function(route1, route2) {
-      return route1.concat(route2);
-    });
+  var routes;
+
+  function initRoutes() {
+    if (routes) {
+      return;
+    }
+
+    routes = {};
+
+    Object.keys(util.ROUTES)
+      .reduce(function(a, b) {
+        return util.ROUTES[a].concat(util.ROUTES[b]);
+      })
+      .map(function(r) {
+        return r.routes || [r];
+      })
+      .reduce(function(a, b) {
+        return (a.routes || a).concat(b.routes || b);
+      })
+      .forEach(function(r) {
+        if (r.hasOwnProperty('level')) {
+          routes[r.route] = [r.level, r.module];
+        }
+      });
+  }
 
   function hasAuth(entry) {
-    entry = routes.filter(function(route) {
-      return route.route === entry;
-    });
-
-    return !entry.length || util.auth.hasAuth(entry[0].level, entry[0].module);
+    initRoutes();
+    return !routes.hasOwnProperty(entry) || util.auth.hasAuth(routes[entry][0], routes[entry][1]);
   }
 
   // app/**/index 提供的回收函数
   // route 切换前执行以回收内存
-  var recycle;
+  var destroy;
 
-  util.use = function(id, params) {
-    // GC
-    if (typeof recycle === 'function') {
-      recycle();
-      recycle = null;
+  // GC
+  util.recycle = function() {
+    var returned;
+
+    if (typeof destroy === 'function') {
+      // 当前阻止销毁
+      returned = destroy();
+      returned !== false && (destroy = null);
     }
 
-    // just for /index.js currently
-    if (typeof id === 'function') {
-      recycle = id(util);
+    return returned;
+  };
+
+  util.use = function(id, params) {
+    //判断页面权限
+    if (!hasAuth(id)) {
+      util.redirect('error/403');
     } else {
-      //判断页面权限
-      if (!hasAuth(id)) {
-        util.redirect('error/403');
-      } else {
-        util.progress.show();
-        window.seajs.use('app/' + id + '/index.js', function(bootstrap) {
-          recycle = bootstrap(util, params);
-          util.progress.show(100);
-        });
-      }
+      util.progress.show();
+      window.seajs.use('app/' + id + '/index.js', function(bootstrap) {
+        destroy = bootstrap(util, params);
+        util.progress.show(100);
+      });
     }
   };
 

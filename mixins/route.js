@@ -43,6 +43,28 @@ module.exports = function(util) {
   };
 
   route.mount({
+    '': function(id) {
+      if (typeof id ==='undefined') {
+        // 已登录
+        if (util.auth.isLogin()) {
+          // 如果是首页，跳转到 home
+          if (!util.route.getRoute(0)) {
+            util.redirect('home');
+            return false;
+          }
+        } else {
+          // 如果不是 login，跳转到 login
+          if (util.route.getRoute(0).indexOf('login') !== 0) {
+            util.redirect('login');
+            return false;
+          }
+        }
+      }
+
+      if (util.recycle() === false) {
+        return false;
+      }
+    },
     '([^!]+)[!]?(.+)?': function(id, params) {
       if (util.auth.isLogin()) {
         if (id === 'login' && !params) {
@@ -59,6 +81,7 @@ module.exports = function(util) {
   });
 
   route.configure({
+    recurse : 'forward',
     before: function(id) {
       // 纯数字，左侧分类切换
       if (!isNaN(id)) {
@@ -76,6 +99,6 @@ module.exports = function(util) {
     }
   });
 
-  route.init();
+  route.init('/');
 
 };
