@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(util) {
+module.exports = function (util) {
 
   // 框架版本
   util.APP_CORE = '1.0.0';
@@ -17,6 +17,8 @@ module.exports = function(util) {
   util.PREPRODUCTION = 8;
   // 压测
   util.PRESSURE = 16;
+  //亚马逊
+  util.AWS = 5;
 
   util.LOC_PROTOCOL = location.protocol;
   util.LOC_HOST = location.host;
@@ -28,7 +30,7 @@ module.exports = function(util) {
   /**
    * @constant {string} ENV
    */
-  util.ENV = util.ENV || (function() {
+  util.ENV = util.ENV || (function () {
     switch (util.LOC_HOSTNAME) {
       case '127.0.0.1':
         return util.SIMULATION;
@@ -47,6 +49,9 @@ module.exports = function(util) {
         if (/\.beta\.web\.sdp\.101\.com$/.test(util.LOC_HOSTNAME)) {
           return util.PREPRODUCTION;
         }
+        if (/\.aws\.101\.com/.test(util.LOC_HOSTNAME)) {
+          return util.AWS;
+        }
         return util.PRODUCTION;
     }
   })();
@@ -54,7 +59,7 @@ module.exports = function(util) {
   /**
    * @constant {string} UC_API_ORIGIN
    */
-  util.UC_API_ORIGIN = util.UC_API_ORIGIN || (function() {
+  util.UC_API_ORIGIN = util.UC_API_ORIGIN || (function () {
     switch (util.ENV) {
       case util.DEVELOPMENT:
         return 'http://101uccenter.beta.web.sdp.101.com';
@@ -62,6 +67,8 @@ module.exports = function(util) {
         return 'http://101uccenter.beta.web.sdp.101.com';
       case util.PRODUCTION:
         return 'https://aqapi.101.com';
+      case util.AWS:
+        return 'https://awsuc.101.com';
       case util.PREPRODUCTION:
         return 'http://101uccenter.beta.web.sdp.101.com';
       case util.PRESSURE:
@@ -74,7 +81,7 @@ module.exports = function(util) {
   /**
    * @constant {string} CS_API_ORIGIN
    */
-  util.CS_API_ORIGIN = util.CS_API_ORIGIN || (function() {
+  util.CS_API_ORIGIN = util.CS_API_ORIGIN || (function () {
     switch (util.ENV) {
       case util.DEVELOPMENT:
         return 'http://betacs.101.com';
@@ -82,6 +89,8 @@ module.exports = function(util) {
         return 'http://betacs.101.com';
       case util.PRODUCTION:
         return 'http://cs.101.com';
+      case util.AWS:
+        return 'https://awscs.101.com';
       case util.PREPRODUCTION:
         return 'http://betacs.101.com';
       case util.PRESSURE:
