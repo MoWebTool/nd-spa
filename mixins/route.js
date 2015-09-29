@@ -42,6 +42,30 @@ module.exports = function(util) {
     return route.getRoute().join(route.delimiter);
   };
 
+  // 阻止下一次跳转生效
+  var cancelNext;
+  var lastRoute;
+  var nextRoute;
+  var currRoute = util.getPath();
+
+  util.goLast = function() {
+    if (lastRoute) {
+      util.redirect(lastRoute);
+    }
+  };
+
+  util.goNext = function(clear) {
+    if (clear) {
+      nextRoute = null;
+    }
+
+    if (nextRoute) {
+      cancelNext = false;
+      util.redirect(nextRoute);
+      nextRoute = null;
+    }
+  };
+
   route.mount({
     '': function(id) {
       if (typeof id ==='undefined') {
@@ -62,7 +86,23 @@ module.exports = function(util) {
       }
 
       if (util.recycle() === false) {
+        if (lastRoute) {
+          cancelNext = true;
+
+          if (!nextRoute) {
+            nextRoute = util.getPath();
+          } else if (lastRoute !== currRoute) {
+            nextRoute = currRoute;
+          }
+
+          util.goLast();
+        }
+
         return false;
+      }
+
+      if (cancelNext) {
+        return (cancelNext = false);
       }
     },
     '([^!]+)[!]?(.+)?': function(id, params) {
@@ -93,6 +133,14 @@ module.exports = function(util) {
     on: function(id, params) {
       startup(id, params);
       updateSidebar(id);
+    },
+    after: function() {
+      if (!cancelNext) {
+        if (isNaN(currRoute)) {
+          lastRoute = currRoute;
+        }
+      }
+      currRoute = util.getPath();
     },
     notfound: function() {
       util.redirect('error/404');

@@ -40,7 +40,6 @@ module.exports = function(util) {
   };
 
   // render layouts except aside
-  // util.layout.render('!aside');
   setTimeout(util.layout.render, 0, '!aside');
 
 };
