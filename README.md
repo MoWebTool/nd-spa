@@ -43,3 +43,9 @@ module.exports = util;
 // /index.js
 window.util = require('./mod/util');
 ```
+
+## 注意
+
+### 与 1.0.0 的不同
+
+入口文件不再需要 `util.use(...)`
