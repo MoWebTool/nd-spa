@@ -154,6 +154,12 @@ module.exports = function(util) {
         replacement[uriVar] = options.uri;
       }
 
+      if(options.replacement) {
+        for (var key in options.replacement) {
+          options.replacement[key] = encodeURIComponent(options.replacement[key]);
+        }
+      }
+
       api = api.join('/');
 
       if (options.data && !/^POST|PATCH|PUT$/i.test(options.type)) {
