@@ -65,7 +65,7 @@ module.exports = function(util) {
       case util.DEBUG:
       case util.PREPRODUCTION:
       case util.PRESSURE:
-        return 'http://101uccenter.beta.web.sdp.101.com';
+        return 'https://ucbetapi.101.com';
       case util.PRODUCTION:
         return 'https://aqapi.101.com';
       case util.AWS:
