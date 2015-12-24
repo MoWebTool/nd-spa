@@ -7,9 +7,9 @@ var ajax = require('nd-ajax');
 
 module.exports = function(util) {
 
-  function addParam(url, params) {
+  function addParam(url, params, placeholder) {
     var arr = Object.keys(params).map(function(key) {
-      return key + '=' + params[key];
+      return key + '=' + (placeholder ? '{' + key + '}' : params[key]);
     }).join('&');
 
     if (!arr) {
@@ -154,30 +154,38 @@ module.exports = function(util) {
         replacement[uriVar] = options.uri;
       }
 
-      if(options.replacement) {
-        for (var key in options.replacement) {
-          options.replacement[key] = encodeURIComponent(options.replacement[key]);
-        }
-      }
-
       api = api.join('/');
 
       if (options.data && !/^POST|PATCH|PUT$/i.test(options.type)) {
-        api = addParam(api, options.data);
+        api = addParam(api, options.data, true);
+
+        if (!replacement) {
+          replacement = {};
+        }
+
+        Object.keys(options.data).forEach(function(key) {
+          replacement[key] = options.data[key];
+        });
       }
 
       if (options.additional) {
         api = addParam(api, options.additional);
       }
 
+      if(replacement) {
+        for (var key in replacement) {
+          replacement[key] = encodeURIComponent(replacement[key]);
+        }
+      }
+
       var dispatcher = JSON.stringify({
+        'protocol': baseUri[0].match(/^(?:https?:)?\/\//i)[0],
         'host': baseUri[0].replace(/^(?:https?:)?\/\//i, ''),
         'ver': baseUri[1],
-        'api': encodeURIComponent(api),
+        'api': encodeURIComponent(api.replace(/#/g, '%23')),
         'var': replacement,
         'module': this.get('module')
       });
-
       baseUri[0] = util.LOC_ORIGIN;
       baseUri[1] = util.DISPATCHER_VERSION;
       baseUri[2] = util.DISPATCHER_PREFIX + '/' + baseUri[2];
