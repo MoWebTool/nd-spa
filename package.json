@@ -1,6 +1,6 @@
 {
   "name": "nd-spa",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
@@ -21,7 +21,6 @@
     "main": "index.js",
     "dependencies": {
       "jquery": "1.11.1",
-      "nd-ajax": "1.0.0",
       "nd-base": "0.0.1",
       "nd-browser": "1.0.0",
       "nd-datetime": "1.0.0",

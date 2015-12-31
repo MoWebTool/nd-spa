@@ -33,31 +33,58 @@ module.exports = function(util) {
     return !routes.hasOwnProperty(entry) || util.auth.hasAuth(routes[entry][0], routes[entry][1]);
   }
 
+  // 当前
+  var currentInstance;
+  var currentApp;
+
   // app/**/index 提供的回收函数
   // route 切换前执行以回收内存
   var destroy;
 
   // GC
-  util.recycle = function() {
+  util.recycle = function(obj, force) {
     var returned;
 
+    // 如果下一个等于当前
+    if (obj.app === currentApp/* && obj.sub*/) {
+      // 如果不是销毁清除，则退出
+      if (!force) {
+        return false;
+      }
+    }
+
     if (typeof destroy === 'function') {
-      // 当前阻止销毁
-      returned = destroy();
-      returned !== false && (destroy = null);
+      returned = destroy(force);
+      // 如果不阻止销毁，则销毁销毁函数
+      (force || returned !== false) && (destroy = null);
     }
 
     return returned;
   };
 
-  util.use = function(id, params) {
+  util.use = function(obj) {
     //判断页面权限
-    if (!hasAuth(id)) {
+    if (!hasAuth(obj.app)) {
       util.redirect('error/403');
     } else {
+      if (currentInstance && currentApp === obj.app && obj.sub) {
+        currentInstance.set('sub', obj.sub);
+        return;
+      }
       util.progress.show();
-      window.seajs.use('app/' + id + '/index.js', function(bootstrap) {
-        destroy = bootstrap(util, params);
+      window.seajs.use('app/' + obj.app + '/index.js', function(bootstrap) {
+        var ret = bootstrap(util, obj.params, obj.sub);
+
+        if (typeof ret === 'function') {
+          destroy = ret;
+          currentInstance = null;
+        } else if (ret) {
+          destroy = ret.destroy;
+          currentInstance = ret.instance;
+        }
+
+        currentApp = obj.app;
+
         util.progress.show(100);
       });
     }

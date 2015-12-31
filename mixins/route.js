@@ -5,12 +5,50 @@ var Router = require('nd-router');
 module.exports = function(util) {
 
   var isLogin = util.auth.isLogin();
+  var decode = window.decodeURIComponent;
 
-  function updateSidebar(id) {
-    setTimeout(util.layout.render, 0, 'aside', id);
+  function convertQuery(params, sep) {
+    var obj = {};
+
+    if (sep === '!') {
+      // OLD AND NEW STYLE.
+      obj.params = params;
+    } else {
+      // FUTURE STYLE.
+      params.split('&').forEach(function(pair) {
+        pair = pair.split('=');
+        obj[decode(pair[0])] = decode(pair[1]);
+      });
+    }
+
+    return obj;
   }
 
-  function startup(id, params) {
+  function convertObj(obj) {
+    // filter sub routes: {id}/{act}
+    var matched = obj.app.match(/^(.+)\/([-0-9a-f]+)\/([a-z]+)$/);
+
+    if (matched) {
+      obj.app = matched[1];
+      obj.sub = {
+        id: matched[2],
+        act: matched[3]
+      };
+    }
+
+    if (obj.params) {
+      obj.params = convertQuery(obj.params, obj.sep);
+    }
+
+    return obj;
+  }
+
+  // 更新侧栏
+  function updateAside(index) {
+    setTimeout(util.layout.render, 0, 'aside', index);
+  }
+
+  function startup(obj) {
     var _isLogin = util.auth.isLogin();
 
     // 登录状态变化
@@ -19,11 +57,11 @@ module.exports = function(util) {
 
       // 重新渲染
       util.layout.render();
-    } else if (_isLogin && id === 'login') {
+    } else if (_isLogin && obj.app === 'login') {
       util.layout.render(null, null, (isLogin = false));
     }
 
-    util.use(id, params);
+    util.use(obj);
   }
 
   var route = util.route = new Router();
@@ -54,8 +92,10 @@ module.exports = function(util) {
     }
   };
 
-  util.goNext = function(clear) {
-    if (clear) {
+  util.goNext = function(yes) {
+
+    if (!yes) {
+      cancelNext = null;
       nextRoute = null;
     }
 
@@ -67,8 +107,10 @@ module.exports = function(util) {
   };
 
   route.mount({
-    '': function(id) {
-      if (typeof id ==='undefined') {
+    // /#/login?auth={auth}&vorg={vorg}
+    '([^!?]+)?([!?])?(.+)?': function(app, sep, params) {
+      // 处理首页
+      if (typeof app ==='undefined') {
         // 已登录
         if (util.auth.isLogin()) {
           // 如果是首页，跳转到 home
@@ -85,7 +127,23 @@ module.exports = function(util) {
         }
       }
 
-      if (util.recycle() === false) {
+      var obj = convertObj({
+        app: app,
+        sep: sep,
+        params: params
+      });
+
+      // 处理阻止跳转
+      if (cancelNext === false) {
+        // if (nextRoute !== currRoute) {
+          // 重置，以免下次无效
+          cancelNext = null;
+          // 强制回收
+          util.recycle({
+            app: lastRoute
+          }, true);
+        // }
+      } else if (util.recycle(obj) === false) {
         if (lastRoute) {
           cancelNext = true;
 
@@ -102,38 +160,33 @@ module.exports = function(util) {
       }
 
       if (cancelNext) {
-        return (cancelNext = false);
+        // return (cancelNext = false);
+        return;
       }
-    },
-    '([^!]+)[!]?(.+)?': function(id, params) {
+
       if (util.auth.isLogin()) {
-        if (id === 'login' && !params) {
+        if (obj.app === 'login' && !obj.params) {
           util.redirect('home');
           return false;
         }
       } else {
-        if (id !== 'login' && id !== 'logout') {
+        if (obj.app !== 'login' && obj.app !== 'logout') {
           util.redirect('login');
           return false;
         }
+      }
+
+      updateAside(obj.app);
+
+      // aside
+      if (!/^\d+$/.test(obj.app)) {
+        startup(obj);
       }
     }
   });
 
   route.configure({
-    recurse : 'forward',
-    before: function(id) {
-      // 纯数字，左侧分类切换
-      if (!isNaN(id)) {
-        updateSidebar(id);
-        // prevent on
-        return false;
-      }
-    },
-    on: function(id, params) {
-      startup(id, params);
-      updateSidebar(id);
-    },
+    recurse: 'forward',
     after: function() {
       if (!cancelNext) {
         if (isNaN(currRoute)) {

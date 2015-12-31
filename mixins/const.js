@@ -120,9 +120,11 @@ module.exports = function(util) {
   util.DISPATCHER_PREFIX = 'dispatcher';
 
   /**
-   * @constant {boolean} 请求代理白名单
+   * @constant {boolean} 请求代理黑名单
    */
-  util.DISPATCHER_WHITELIST = [];
+  util.DISPATCHER_IGNORES = [
+    util.CS_API_ORIGIN
+  ];
 
   /**
    * @constant {string} DATETIME_FORMAT 默认的时间日期格式
