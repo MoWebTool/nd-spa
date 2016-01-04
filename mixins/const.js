@@ -122,7 +122,7 @@ module.exports = function(util) {
   /**
    * @constant {boolean} 请求代理黑名单
    */
-  util.DISPATCHER_IGNORES = [
+  util.DISPATCHER_IGNORE = [
     util.CS_API_ORIGIN
   ];
 

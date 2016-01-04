@@ -106,6 +106,9 @@ module.exports = function(util) {
       // 拷贝默认参数
       that._mergeOptions(options);
 
+      // 事件通知
+      that.trigger(options.type, options);
+
       // 判断是否需要访问代理
       that._checkDispatcher(options);
 
@@ -117,9 +120,6 @@ module.exports = function(util) {
 
       // 处理直接访问
       that._handleFinally(options);
-
-      // 事件通知
-      that.trigger(options.type, options);
 
       // if (!options.url) {
         // return options;
@@ -179,7 +179,7 @@ module.exports = function(util) {
       }
 
       // 存在忽略名单
-      if (util.DISPATCHER_IGNORES.indexOf(baseUri0) !== -1) {
+      if (util.DISPATCHER_IGNORE.indexOf(baseUri0) !== -1) {
         return;
       }
 
