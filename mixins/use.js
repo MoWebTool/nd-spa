@@ -46,20 +46,20 @@ module.exports = function(util) {
     var returned;
 
     // 如果下一个等于当前
-    if (obj.app === currentApp/* && obj.sub*/) {
-      // 如果不是销毁清除，则退出
-      if (!force) {
-        return false;
-      }
-    }
+    // if (obj.app === currentApp/* && obj.sub*/) {
+    //   // 如果不是强制销毁，则退出
+    //   if (force !== true) {
+    //     return;
+    //   }
+    // }
 
     if (typeof destroy === 'function') {
       returned = destroy(force);
       // 如果不阻止销毁，则销毁销毁函数
-      (force || returned !== false) && (destroy = null);
+      (returned !== false) && (destroy = null);
     }
 
-    return returned;
+    return force ? force : returned;
   };
 
   util.use = function(obj) {

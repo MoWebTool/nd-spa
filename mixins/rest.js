@@ -1,7 +1,5 @@
 'use strict';
 
-var $ = require('jquery');
-
 var Browser = require('nd-browser');
 var Base = require('nd-base');
 var RESTful = require('nd-restful');
@@ -10,7 +8,7 @@ var encode = window.encodeURIComponent;
 
 var addParam = function(url, params, placeholder) {
   var arr = Object.keys(params).map(function(key) {
-    return key + '=' + (placeholder ? '{' + key + '}' : params[key]);
+    return key + '=' + (placeholder ? '{' + key + '}' : encode(params[key]));
   }).join('&');
 
   if (!arr) {
@@ -19,42 +17,6 @@ var addParam = function(url, params, placeholder) {
 
   return url + (url.indexOf('?') !== -1 ? '&' : '?') + arr;
 }
-
-var ajax = function(options) {
-  var defer = $.Deferred();
-
-  $.ajax({
-    headers: options.headers,
-    url: options.url,
-    type: options.type,
-    data: options.data,
-    processData: options.processData,
-    contentType: options.contentType
-  })
-  .done(function(data, status, xhr) {
-    if (options.done) {
-      options.done(defer, data, xhr);
-    } else {
-      defer.resolve(data);
-    }
-  })
-  .fail(function(xhr, status, error) {
-    if (options.fail) {
-      options.fail(defer, error, xhr);
-    } else {
-      defer.reject(error);
-    }
-  })
-  .always(function() {
-    if (options.always) {
-      options.always(defer);
-    } else {
-      defer.always();
-    }
-  });
-
-  return defer.promise();
-};
 
 module.exports = function(util) {
 
@@ -84,6 +46,42 @@ module.exports = function(util) {
     };
   }
 
+  var ajax = function(options) {
+    var defer = util.$.Deferred();
+
+    util.$.ajax({
+      headers: options.headers,
+      url: options.url,
+      type: options.type,
+      data: options.data,
+      processData: options.processData,
+      contentType: options.contentType
+    })
+    .done(function(data, status, xhr) {
+      if (options.done) {
+        options.done(defer, data, xhr);
+      } else {
+        defer.resolve(data);
+      }
+    })
+    .fail(function(xhr, status, error) {
+      if (options.fail) {
+        options.fail(defer, error, xhr);
+      } else {
+        defer.reject(error);
+      }
+    })
+    .always(function() {
+      if (options.always) {
+        options.always(defer);
+      } else {
+        defer.always();
+      }
+    });
+
+    return defer.promise();
+  };
+
   util.REST = Base.extend({
     Implements: [RESTful],
 
@@ -101,29 +99,23 @@ module.exports = function(util) {
     },
 
     request: function(options) {
-      var that = this;
-
       // 拷贝默认参数
-      that._mergeOptions(options);
+      this._mergeOptions(options);
 
       // 事件通知
-      that.trigger(options.type, options);
+      this.trigger(options.type, options);
 
       // 判断是否需要访问代理
-      that._checkDispatcher(options);
+      this._checkDispatcher(options);
 
       // 处理参数
-      that._handleOptions(options);
+      this._handleOptions(options);
 
       // 处理访问代理
-      that._handleDispatcher(options);
+      this._handleDispatcher(options);
 
       // 处理直接访问
-      that._handleFinally(options);
-
-      // if (!options.url) {
-        // return options;
-      // }
+      this._handleFinally(options);
 
       if (!options.headers) {
         options.headers = {};
@@ -190,8 +182,7 @@ module.exports = function(util) {
       if (options.additional) {
         console.warn('不建议使用 additional 参数，将在后续版本移除');
 
-        $.extend(options.data, options.additional);
-        // url = addParam(url, options.additional);
+        util.$.extend(options.data, options.additional);
         delete options.additional;
       }
 
@@ -307,7 +298,13 @@ module.exports = function(util) {
       ]
       .forEach(function(key) {
         if (!(key in options) && (value = this.get(key))) {
-          options[key] = Array.isArray(value) ? value.slice() : value;
+          if (Array.isArray(value)) {
+            options[key] = value.slice();
+          } else if (util.$.isPlainObject(value)) {
+            options[key] = util.$.extend({}, value);
+          } else {
+            options[key] = value;
+          }
         }
       }, this);
     }

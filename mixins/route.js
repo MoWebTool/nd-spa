@@ -93,7 +93,6 @@ module.exports = function(util) {
   };
 
   util.goNext = function(yes) {
-
     if (!yes) {
       cancelNext = null;
       nextRoute = null;
@@ -135,14 +134,12 @@ module.exports = function(util) {
 
       // 处理阻止跳转
       if (cancelNext === false) {
-        // if (nextRoute !== currRoute) {
-          // 重置，以免下次无效
-          cancelNext = null;
-          // 强制回收
-          util.recycle({
-            app: lastRoute
-          }, true);
-        // }
+        // 重置，以免下次无效
+        cancelNext = null;
+        // 强制回收
+        util.recycle({
+          app: lastRoute
+        }, true);
       } else if (util.recycle(obj) === false) {
         if (lastRoute) {
           cancelNext = true;
@@ -155,12 +152,10 @@ module.exports = function(util) {
 
           util.goLast();
         }
-
         return false;
       }
 
       if (cancelNext) {
-        // return (cancelNext = false);
         return;
       }
 
