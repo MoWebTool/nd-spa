@@ -58,6 +58,7 @@ module.exports = function(util) {
 
     if (appHandler) {
       if (!appHandler.isReady()) {
+        util.progress.show();
         return false;
       }
 
@@ -107,8 +108,16 @@ module.exports = function(util) {
 
         appHandler.appId = obj.app;
 
-        if (!appHandler.isReady()) {
+        if (appHandler.onReady) {
+          appHandler.onReady(function() {
+            util.progress.show(100);
+          });
+        }
+
+        if (appHandler.isReady()) {
           util.progress.show(100);
+        } else {
+          util.progress.show();
         }
       });
     }
