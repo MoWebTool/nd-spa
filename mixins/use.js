@@ -56,7 +56,11 @@ module.exports = function(util) {
   util.recycle = function(obj, force) {
     var returned;
 
-    if (appHandler && typeof appHandler.destroy === 'function') {
+    if (appHandler) {
+      if (!appHandler.isReady()) {
+        return false;
+      }
+
       returned = appHandler.destroy(force);
       // 如果不阻止销毁，则销毁销毁函数
       (returned !== false) && (appHandler = null);
@@ -95,13 +99,15 @@ module.exports = function(util) {
             getInstance: function() {
               return null;
             },
-            async: false
+            isReady: function() {
+              return true;
+            }
           };
         }
 
         appHandler.appId = obj.app;
 
-        if (!appHandler.async) {
+        if (!appHandler.isReady()) {
           util.progress.show(100);
         }
       });

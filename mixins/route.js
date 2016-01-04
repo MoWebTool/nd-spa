@@ -132,6 +132,10 @@ module.exports = function(util) {
         params: params
       });
 
+      if (cancelNext) {
+        return (cancelNext = null);
+      }
+
       // 处理阻止跳转
       if (cancelNext === false) {
         // 重置，以免下次无效
@@ -152,11 +156,8 @@ module.exports = function(util) {
 
           util.goLast();
         }
-        return false;
-      }
 
-      if (cancelNext) {
-        return (cancelNext = false);
+        return false;
       }
 
       if (util.auth.isLogin()) {
