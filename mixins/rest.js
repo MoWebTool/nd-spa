@@ -226,7 +226,7 @@ module.exports = function(util) {
 
       // 开始设置 dispatcher
       var url = options.url;
-      var api = url.slice(2).join('/');
+      var api = '/' + url.slice(2).join('/');
       var vars = options.vars;
       var data = options.data;
 

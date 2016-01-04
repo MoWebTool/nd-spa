@@ -33,30 +33,33 @@ module.exports = function(util) {
     return !routes.hasOwnProperty(entry) || util.auth.hasAuth(routes[entry][0], routes[entry][1]);
   }
 
-  // 当前
-  var currentInstance;
-  var currentApp;
+  function isValidHandler(obj) {
+    if (!obj) {
+      return false;
+    }
 
-  // app/**/index 提供的回收函数
-  // route 切换前执行以回收内存
-  var destroy;
+    if (typeof obj === 'function') {
+      return true;
+    }
+
+    if (!obj.destroy) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // 当前
+  var appHandler;
 
   // GC
   util.recycle = function(obj, force) {
     var returned;
 
-    // 如果下一个等于当前
-    // if (obj.app === currentApp/* && obj.sub*/) {
-    //   // 如果不是强制销毁，则退出
-    //   if (force !== true) {
-    //     return;
-    //   }
-    // }
-
-    if (typeof destroy === 'function') {
-      returned = destroy(force);
+    if (appHandler && typeof appHandler.destroy === 'function') {
+      returned = appHandler.destroy(force);
       // 如果不阻止销毁，则销毁销毁函数
-      (returned !== false) && (destroy = null);
+      (returned !== false) && (appHandler = null);
     }
 
     return force ? force : returned;
@@ -67,25 +70,40 @@ module.exports = function(util) {
     if (!hasAuth(obj.app)) {
       util.redirect('error/403');
     } else {
-      if (currentInstance && currentApp === obj.app && obj.sub) {
-        currentInstance.set('sub', obj.sub);
-        return;
+      var instance;
+
+      if (appHandler) {
+        if (appHandler.appId === obj.app && obj.sub) {
+          instance = appHandler.getInstance();
+          if (instance) {
+            return instance.set('sub', obj.sub);
+          }
+        }
       }
+
       util.progress.show();
       window.seajs.use('app/' + obj.app + '/index.js', function(bootstrap) {
-        var ret = bootstrap(util, obj.params, obj.sub);
+        appHandler = bootstrap(util, obj.params, obj.sub);
 
-        if (typeof ret === 'function') {
-          destroy = ret;
-          currentInstance = null;
-        } else if (ret) {
-          destroy = ret.destroy;
-          currentInstance = ret.instance;
+        if (!isValidHandler(appHandler)) {
+          throw new Error('`app/**/index.js` must return a function or object');
         }
 
-        currentApp = obj.app;
+        if (typeof appHandler === 'function') {
+          appHandler = {
+            destroy: appHandler,
+            getInstance: function() {
+              return null;
+            },
+            async: false
+          };
+        }
 
-        util.progress.show(100);
+        appHandler.appId = obj.app;
+
+        if (!appHandler.async) {
+          util.progress.show(100);
+        }
       });
     }
   };

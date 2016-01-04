@@ -156,7 +156,7 @@ module.exports = function(util) {
       }
 
       if (cancelNext) {
-        return;
+        return (cancelNext = false);
       }
 
       if (util.auth.isLogin()) {

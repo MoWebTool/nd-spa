@@ -15,5 +15,4 @@ module.exports = function(global) {
   require('./mixins/layout')(global);
   require('./mixins/use')(global);
   require('./mixins/route')(global);
-  require('./mixins/async')(global);
 };
