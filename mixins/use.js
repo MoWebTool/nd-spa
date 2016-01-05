@@ -106,6 +106,18 @@ module.exports = function(util) {
           };
         }
 
+        if (!appHandler.getInstance) {
+          appHandler.getInstance = function() {
+            return null;
+          };
+        }
+
+        if (!appHandler.isReady) {
+          appHandler.isReady = function() {
+            return true;
+          };
+        }
+
         appHandler.appId = obj.app;
 
         if (appHandler.onReady) {
