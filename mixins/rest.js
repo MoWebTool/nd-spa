@@ -253,7 +253,9 @@ module.exports = function(util) {
         'api': encode(api.replace(/#/g, '%23')),
         'var': vars,
         'module': this.get('module'),
-        'vorg': util.auth.getAuth('vorg')
+        'header': {
+          'vorg': util.auth.getAuth('vorg')
+        }
       });
 
       // 修改默认的地址
