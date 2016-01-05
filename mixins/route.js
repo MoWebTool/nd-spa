@@ -125,6 +125,11 @@ module.exports = function(util) {
           }
         }
       }
+      
+      if (/^\d+$/.test(app)) {
+        updateAside(app);
+        return false;
+      }
 
       var obj = convertObj({
         app: app,
@@ -174,10 +179,8 @@ module.exports = function(util) {
 
       updateAside(obj.app);
 
-      // aside
-      if (!/^\d+$/.test(obj.app)) {
-        startup(obj);
-      }
+      startup(obj);
+
     }
   });
 
