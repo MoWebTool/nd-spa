@@ -51,10 +51,15 @@ module.exports = function(util) {
 
   // 当前
   var appHandler;
+  var pendingUse;
 
   // GC
   util.recycle = function(obj, force) {
     var returned;
+
+    if (pendingUse) {
+      return false;
+    }
 
     if (appHandler) {
       if (!appHandler.isReady()) {
@@ -78,7 +83,7 @@ module.exports = function(util) {
       var instance;
 
       if (appHandler) {
-        if (appHandler.appId === obj.app && obj.sub) {
+        if (appHandler.__obj.app === obj.app && obj.sub) {
           instance = appHandler.getInstance();
           if (instance) {
             return instance.set('sub', obj.sub);
@@ -87,7 +92,10 @@ module.exports = function(util) {
       }
 
       util.progress.show();
+      pendingUse = true;
       window.seajs.use('app/' + obj.app + '/index.js', function(bootstrap) {
+        pendingUse = false;
+
         appHandler = bootstrap(util, obj.params, obj.sub);
 
         if (!isValidHandler(appHandler)) {
@@ -118,7 +126,7 @@ module.exports = function(util) {
           };
         }
 
-        appHandler.appId = obj.app;
+        appHandler.__obj = obj;
 
         if (appHandler.onReady) {
           appHandler.onReady(function() {
