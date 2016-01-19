@@ -12,11 +12,19 @@ module.exports = function(util) {
       size = 80;
     }
 
-    if (realm) {
-      return util.CS_API_ORIGIN + '/v0.1/static/cscommon/avatar/' + uid + '/' +  realm+ '/' + uid + '.jpg?size=' + size;
+    var csname;
+
+    if (util.ENV === util.PRODUCTION || util.ENV === util.AWS) {
+      csname = 'cscommon';
+    } else {
+      csname = 'preproduction_content_cscommon';
     }
 
-    return util.CS_API_ORIGIN + '/v0.1/static/cscommon/avatar/' + uid + '/' + uid + '.jpg?size=' + size;
+    if (realm) {
+      return util.CS_API_ORIGIN + '/v0.1/static/' + csname + '/avatar/' + uid + '/' + realm + '/' + uid + '.jpg?size=' + size;
+    }
+
+    return util.CS_API_ORIGIN + '/v0.1/static/' + csname + '/avatar/' + uid + '/' + uid + '.jpg?size=' + size;
   };
 
 };
