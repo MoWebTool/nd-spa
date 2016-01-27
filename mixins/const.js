@@ -19,6 +19,8 @@ module.exports = function(util) {
   util.PRESSURE = 16;
   // 亚马逊
   util.AWS = 32;
+  // 党员E家
+  util.DYEJIA = 64;
 
   util.LOC_PROTOCOL = location.protocol;
   util.LOC_HOST = location.host;
@@ -52,6 +54,9 @@ module.exports = function(util) {
         if (/\.aws\.101\.com$/.test(util.LOC_HOSTNAME)) {
           return util.AWS;
         }
+        if (/\.dyejia\.cn$/.test(util.LOC_HOSTNAME)) {
+          return util.DYEJIA;
+        }
         return util.PRODUCTION;
     }
   })();
@@ -70,6 +75,8 @@ module.exports = function(util) {
         return 'https://aqapi.101.com';
       case util.AWS:
         return 'https://awsuc.101.com';
+      case util.DYEJIA:
+        return 'https://uc.dyejia.cn';
       default:
         return util.LOC_ORIGIN;
     }
@@ -89,6 +96,8 @@ module.exports = function(util) {
         return 'http://cs.101.com';
       case util.AWS:
         return 'https://awscs.101.com';
+      case util.DYEJIA:
+        return 'https://cs.dyejia.cn';
       default:
         return util.LOC_ORIGIN;
     }
