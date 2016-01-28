@@ -133,10 +133,15 @@ module.exports = function(util) {
         }
       }
 
+      var vorg = util.auth.getAuth('vorg');
+
+      if (vorg) {
+        options.headers.vorg = vorg;
+      }
+
       // proxy pass
       if (options.dispatcher) {
         options.headers.Dispatcher = options.dispatcher;
-        options.headers.vorg = util.auth.getAuth('vorg');
       }
 
       // has uc tokens
@@ -246,7 +251,7 @@ module.exports = function(util) {
         }
       }
 
-      options.dispatcher = JSON.stringify({
+      var dispatcher = {
         'protocol': url[0].match(/^(?:https?:)?\/\//i)[0],
         'host': url[0].replace(/^(?:https?:)?\/\//i, ''),
         'ver': url[1],
@@ -256,7 +261,17 @@ module.exports = function(util) {
         'header': {
           'vorg': util.auth.getAuth('vorg')
         }
-      });
+      };
+
+      var vorg = util.auth.getAuth('vorg');
+
+      if (vorg) {
+        dispatcher.header = {
+          vorg: vorg
+        };
+      }
+
+      options.dispatcher = JSON.stringify(dispatcher);
 
       // 修改默认的地址
       url[0] = util.LOC_ORIGIN;
