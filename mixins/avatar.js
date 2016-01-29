@@ -12,13 +12,21 @@ module.exports = function(util) {
       size = 80;
     }
 
-    var csname;
-
-    if (util.ENV === util.PRODUCTION || util.ENV === util.AWS) {
-      csname = 'cscommon';
-    } else {
-      csname = 'preproduction_content_cscommon';
-    }
+    var csname = (function() {
+      switch (util.ENV) {
+        case util.DEVELOPMENT:
+        case util.DEBUG:
+        case util.PREPRODUCTION:
+        case util.PRESSURE:
+          return 'preproduction_content_cscommon';
+        case util.PRODUCTION:
+        case util.AWS:
+        case util.DYEJIA:
+          return 'cscommon';
+        default:
+          return 'cscommon';
+      }
+    })();
 
     if (realm) {
       return util.CS_API_ORIGIN + '/v0.1/static/' + csname + '/avatar/' + uid + '/' + realm + '/' + uid + '.jpg?size=' + size;
