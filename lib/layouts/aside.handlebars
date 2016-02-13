@@ -1,0 +1,21 @@
+<ul class="nav">
+  {{#each modules}}
+    <li class="module{{#if active}} module-active{{/if}}" data-folder="{{name}}">
+      <a class="iconfont iconfont-{{icon}}" href="/#/{{name}}">{{title}}</a>
+      <ul class="folders">
+      {{#each folders}}
+        <li class="folder{{#if active}} folder-active{{/if}}" data-folder="{{@index}}">
+          <a class="iconfont iconfont-{{icon}}" href="/#/{{../name}}/{{@index}}"><span>{{__ title}}</span></a>
+          <ul class="routes">
+            {{#each routes}}
+              <li class="route{{#if active}} route-active{{/if}}">
+                <a href="/#/{{../../name}}/{{route}}" data-route="{{../../name}}/{{route}}"><span>{{__ title}}</span></a>
+              </li>
+            {{/each}}
+          </ul>
+        </li>
+      {{/each}}
+      </ul>
+    </li>
+  {{/each}}
+</ul>
