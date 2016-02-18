@@ -20,7 +20,7 @@
     {{#if userdata}}
       <li class="route-me">
         <a href="javascript:;" data-role="me">
-          <img class="avatar" src="{{userdata.avatar}}" onerror="this.src=util.BLANK">
+          <img class="avatar" src="{{userdata.avatar}}" onerror="this.src='{{userdata.avatar_alt}}';this.onerror=''">
           <span>{{userdata.nick_name}}</span>
         </a>
       </li>
