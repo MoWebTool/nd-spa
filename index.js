@@ -112,6 +112,10 @@ var util = module.exports = {
  * @constant {string} ENV
  */
 util.ENV = (function() {
+  if (window.ENV && util.hasOwnProperty(window.ENV)) {
+    return util[window.ENV];
+  }
+
   switch (util.LOC_HOSTNAME) {
     case '127.0.0.1':
       return util.SIMULATION;
@@ -140,19 +144,6 @@ util.ENV = (function() {
   }
 })();
 
-// util.$ = require('./lib/dollar');
-// util.unique = require('./lib/unique');
-// util.avatar = require('./lib/avatar');
-// util.session = require('./lib/session');
-// util.storage = require('./lib/storage');
-// util.console = require('./lib/console');
-// util.progress = require('./lib/progress');
-// util.rest = require('./lib/rest');
-// util.auth = require('./lib/auth');
-// util.bread = require('./lib/bread');
-// util.layout = require('./lib/layout');
-// util.router = require('./lib/router');
-
 var debug = require('nd-debug');
 var Message = require('nd-message');
 
@@ -174,7 +165,7 @@ function render(msg, cb, ms, level) {
   }).render();
 }
 
-var console = {
+var _debug = {
 
   log: function() {
     if (util.ENV !== 'PRODUCTION') {
@@ -201,8 +192,8 @@ var console = {
 };
 
 // take care of debug
-debug.log = console.log;
-debug.warn = console.warn;
-debug.error = console.error;
-debug.info = console.info;
-debug.success = console.success;
+debug.log = _debug.log;
+debug.warn = _debug.warn;
+debug.error = _debug.error;
+debug.info = _debug.info;
+debug.success = _debug.success;
