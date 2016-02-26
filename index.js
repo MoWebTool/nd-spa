@@ -99,12 +99,7 @@ var util = module.exports = {
   /**
    * @constant {string} TOAST_DURATION 默认提示信息显示毫秒数
    */
-  TOAST_DURATION: 3000,
-
-  /**
-   * @constant {string}  透明图片
-   */
-  BLANK: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+  TOAST_DURATION: 3000
 
 };
 
