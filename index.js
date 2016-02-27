@@ -1,16 +1,5 @@
 'use strict';
 
-var $ = require('nd-jquery');
-
-// fix https://github.com/jquery/jquery/issues/1684
-$.ajaxSetup({
-  xhr: function() {
-    try {
-      return new window.XMLHttpRequest();
-    } catch (e) {}
-  }
-});
-
 var util = module.exports = {
 
   APP_NAME: window.APP_NAME,
