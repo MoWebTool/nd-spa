@@ -1,6 +1,6 @@
 {
   "name": "nd-spa",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
@@ -22,21 +22,21 @@
   "licenses": "MIT",
   "main": "index.js",
   "dependencies": {
-    "jquery": "^1.11.1",
-    "nd-base": "^3.0.0",
+    "nd-base": "^3.0.1",
     "nd-browser": "^3.0.0",
     "nd-datetime": "^3.0.0",
     "nd-debug": "^3.0.0",
     "nd-i18n": "^3.0.0",
     "nd-message": "^3.0.0",
-    "nd-overlay": "^3.0.0",
+    "nd-overlay": "^3.0.1",
     "nd-restful": "^3.0.0",
     "nd-router": "^3.0.0",
-    "nd-select": "^3.0.0",
+    "nd-select": "^3.0.1",
     "nd-sha": "^3.0.0",
     "nd-storage": "^3.0.0",
-    "nd-template": "^3.0.0",
-    "nd-widget": "^3.0.0"
+    "nd-template": "^3.0.1",
+    "nd-widget": "^3.0.1",
+    "nd-jquery": "^2.2.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",

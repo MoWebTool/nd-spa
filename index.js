@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = require('jquery');
+var $ = require('nd-jquery');
 
 // fix https://github.com/jquery/jquery/issues/1684
 $.ajaxSetup({
