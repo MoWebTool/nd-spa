@@ -17,16 +17,16 @@ var util = module.exports = {
   DEVELOPMENT: 1,
   // 测试
   DEBUG: 2,
-  // 生产
-  PRODUCTION: 4,
-  // 预生产
-  PREPRODUCTION: 8,
   // 压测
-  PRESSURE: 16,
+  PRESSURE: 3,
+  // 预生产
+  PREPRODUCTION: 4,
+  // 生产
+  PRODUCTION: 5,
   // 亚马逊
-  AWS: 32,
+  AWS: 6,
   // 党员 E 家
-  DYEJIA: 64,
+  DYEJIA: 7,
 
   LOC_PROTOCOL: location.protocol,
   LOC_HOST: location.host,
