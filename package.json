@@ -1,6 +1,6 @@
 {
   "name": "nd-spa",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
@@ -36,7 +36,8 @@
     "nd-sha": "^3.0.0",
     "nd-storage": "^3.0.0",
     "nd-template": "^3.0.1",
-    "nd-widget": "^3.0.1"
+    "nd-widget": "^3.0.1",
+    "superagent": "^1.7.2"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
