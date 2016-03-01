@@ -41,21 +41,6 @@ var util = module.exports = {
   CACHE_ENABLED: false,
 
   /**
-   * @constant {boolean} 开启基于角色的权限控制
-   */
-  RBAC_ENABLED: true,
-
-  /**
-   * @constant {boolean} 开启多语言支持
-   */
-  I18N_ENABLED: true,
-
-  /**
-   * @constant {boolean} 启用接口请求代理
-   */
-  DISPATCHER_ENABLED: true,
-
-  /**
    * @constant {boolean} 接口请求代理版本
    */
   DISPATCHER_VERSION: 'v0.1',
@@ -149,35 +134,25 @@ function render(msg, cb, ms, level) {
   }).render();
 }
 
-var _debug = {
-
-  log: function() {
-    if (util.ENV !== 'PRODUCTION') {
-      console.log.apply(null, arguments);
-    }
-  },
-
-  warn: function(msg, cb, ms) {
-    return render(msg, cb, ms, 'warning');
-  },
-
-  error: function(msg, cb, ms) {
-    return render(msg, cb, ms, 'danger');
-  },
-
-  info: function(msg, cb, ms) {
-    return render(msg, cb, ms, 'info');
-  },
-
-  success: function(msg, cb, ms) {
-    return render(msg, cb, ms, 'success');
+// take care of debug
+debug.log = function() {
+  if (util.ENV !== 'PRODUCTION') {
+    console.log.apply(console, arguments);
   }
-
 };
 
-// take care of debug
-debug.log = _debug.log;
-debug.warn = _debug.warn;
-debug.error = _debug.error;
-debug.info = _debug.info;
-debug.success = _debug.success;
+debug.warn = function(msg, cb, ms) {
+  return render(msg, cb, ms, 'warning');
+};
+
+debug.error = function(msg, cb, ms) {
+  return render(msg, cb, ms, 'danger');
+};
+
+debug.info = function(msg, cb, ms) {
+  return render(msg, cb, ms, 'info');
+};
+
+debug.success = function(msg, cb, ms) {
+  return render(msg, cb, ms, 'success');
+};
