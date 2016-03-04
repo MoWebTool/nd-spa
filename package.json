@@ -1,6 +1,6 @@
 {
   "name": "nd-spa",
-  "version": "3.0.14",
+  "version": "3.0.15",
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
@@ -36,7 +36,7 @@
     "nd-sha": "^3.0.0",
     "nd-storage": "^3.0.0",
     "nd-template": "^3.0.1",
-    "nd-widget": "^3.0.1",
+    "nd-widget": "^3.0.2",
     "superagent": "^1.7.2"
   },
   "devDependencies": {
