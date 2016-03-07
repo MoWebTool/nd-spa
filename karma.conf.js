@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var argv = require('yargs').argv;
+var argv = require('yargs').argv
 
 module.exports = function(config) {
   config.set({

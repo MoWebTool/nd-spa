@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 var util = module.exports = {
 
@@ -75,58 +75,58 @@ var util = module.exports = {
    */
   TOAST_DURATION: 3000
 
-};
+}
 
 /**
  * @constant {string} ENV
  */
 util.ENV = (function() {
   if (window.ENV && util.hasOwnProperty(window.ENV)) {
-    return util[window.ENV];
+    return util[window.ENV]
   }
 
   switch (util.LOC_HOSTNAME) {
     case '127.0.0.1':
-      return util.SIMULATION;
+      return util.SIMULATION
     case 'localhost':
-      return util.PRODUCTION;
+      return util.PRODUCTION
     default:
       if (/\.dev\.web\.nd$/.test(util.LOC_HOSTNAME)) {
-        return util.DEVELOPMENT;
+        return util.DEVELOPMENT
       }
       if (/\.debug\.web\.nd$/.test(util.LOC_HOSTNAME)) {
-        return util.DEBUG;
+        return util.DEBUG
       }
       if (/\.qa\.web\.sdp\.101\.com$/.test(util.LOC_HOSTNAME)) {
-        return util.PRESSURE;
+        return util.PRESSURE
       }
       if (/\.beta\.web\.sdp\.101\.com$/.test(util.LOC_HOSTNAME)) {
-        return util.PREPRODUCTION;
+        return util.PREPRODUCTION
       }
       if (/\.aws\.101\.com$/.test(util.LOC_HOSTNAME)) {
-        return util.AWS;
+        return util.AWS
       }
       if (/\.dyejia\.cn$/.test(util.LOC_HOSTNAME)) {
-        return util.DYEJIA;
+        return util.DYEJIA
       }
-      return util.PRODUCTION;
+      return util.PRODUCTION
   }
-})();
+})()
 
-var debug = require('nd-debug');
-var Message = require('nd-message');
+var debug = require('nd-debug')
+var Message = require('nd-message')
 
 /*eslint max-params: [2, 4]*/
 function render(msg, cb, ms, level) {
   if (typeof cb === 'number') {
-    ms = cb;
-    cb = null;
+    ms = cb
+    cb = null
   }
 
   if (typeof msg === 'string') {
     msg = {
       brief: msg
-    };
+    }
   }
 
   return new Message({
@@ -137,28 +137,28 @@ function render(msg, cb, ms, level) {
       timeout: ms || util.TOAST_DURATION,
       level: level
     }
-  }).render();
+  }).render()
 }
 
 // take care of debug
 debug.log = function() {
   if (util.ENV !== 'PRODUCTION') {
-    console.log.apply(console, arguments);
+    console.log.apply(console, arguments)
   }
-};
+}
 
 debug.warn = function(msg, cb, ms) {
-  return render(msg, cb, ms, 'warning');
-};
+  return render(msg, cb, ms, 'warning')
+}
 
 debug.error = function(msg, cb, ms) {
-  return render(msg, cb, ms, 'danger');
-};
+  return render(msg, cb, ms, 'danger')
+}
 
 debug.info = function(msg, cb, ms) {
-  return render(msg, cb, ms, 'info');
-};
+  return render(msg, cb, ms, 'info')
+}
 
 debug.success = function(msg, cb, ms) {
-  return render(msg, cb, ms, 'success');
-};
+  return render(msg, cb, ms, 'success')
+}

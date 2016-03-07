@@ -4,23 +4,27 @@
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
+  "bugs": {
+    "url": "https://github.com/ndfront/nd-spa/issues"
+  },
+  "licenses": [
+    {}
+  ],
   "author": {
     "name": "crossjs",
     "email": "liwenfu@crossjs.com"
   },
-  "scripts": {
-    "test": "node ./node_modules/karma/bin/karma start ./karma.conf.js",
-    "test:dev": "npm run test -- --watch"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ndfront/nd-spa.git"
   },
-  "bugs": {
-    "url": "https://github.com/ndfront/nd-spa/issues"
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "node ./node_modules/karma/bin/karma start ./karma.conf.js",
+    "test:dev": "npm run test -- --watch"
   },
-  "licenses": "MIT",
-  "main": "index.js",
   "dependencies": {
     "nd-base": "^3.0.1",
     "nd-browser": "^3.0.0",
@@ -30,6 +34,7 @@
     "nd-jquery": "^2.2.2",
     "nd-message": "^3.0.1",
     "nd-overlay": "^3.0.1",
+    "nd-promise": "^3.0.0",
     "nd-restful": "^3.0.0",
     "nd-router": "^3.0.0",
     "nd-select": "^3.0.2",
@@ -55,6 +60,7 @@
     "phantomjs-prebuilt": "^2.1.3",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
+    "superagent-mock": "^1.10.0",
     "webpack": "^1.12.14",
     "yargs": "^4.2.0"
   }

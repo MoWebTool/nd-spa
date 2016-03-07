@@ -8,6 +8,7 @@
     "JSON": true
   },
   "rules": {
+    "semi": [2, "never"],
     "no-bitwise": 0,
     "camelcase": 2,
     "curly": 2,
