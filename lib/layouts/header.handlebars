@@ -7,29 +7,29 @@
   <button class="iconfont iconfont-toggle"></button>
 {{/if}}
   <ul>
-    {{#if languages}}
-      <li class="route-i18n">
-        <select data-role="i18n">
-        {{#each languages}}
-          <option value="{{value}}"{{#if selected}} selected{{/if}}>{{text}}</option>
-        {{/each}}
-        </select>
-      </li>
-    {{/if}}
+  {{#if languages}}
+    <li class="route-i18n">
+      <select data-role="i18n">
+      {{#each languages}}
+        <option value="{{value}}"{{#if selected}} selected{{/if}}>{{text}}</option>
+      {{/each}}
+      </select>
+    </li>
+  {{/if}}
 {{#if authed}}
-    {{#if userdata}}
-      <li class="route-me">
-        <a href="javascript:;" data-role="me">
-          <img class="avatar" src="{{userdata.avatar}}" onerror="this.src='{{userdata.avatar_alt}}';this.onerror=''">
-          <span>{{userdata.nick_name}}</span>
-        </a>
-      </li>
-    {{/if}}
-    {{#each routes}}
-      <li class="route-{{route}}">
-        <a href="/#/{{route}}" data-route="{{route}}">{{__ title}}</a>
-      </li>
-    {{/each}}
+  {{#if userdata}}
+    <li class="route-me">
+      <a href="javascript:;" data-role="me">
+        <img class="avatar" src="{{userdata.avatar}}" onerror="this.src='{{userdata.avatar_alt}}';this.onerror=''">
+        <span>{{userdata.nick_name}}</span>
+      </a>
+    </li>
+  {{/if}}
+  {{#each routes}}
+    <li class="route-{{route}}">
+      <a href="/#/{{route}}" data-route="{{route}}">{{__ title}}</a>
+    </li>
+  {{/each}}
 {{/if}}
   </ul>
 </div>
