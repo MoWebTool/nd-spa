@@ -14,7 +14,7 @@ chai.use(sinonChai)
 describe('unique', function() {
 
   it('is uuid', function() {
-    var n = 10000
+    var n = 100
     var r = /^[0-9a-f]{8}\-[0-9a-f]{4}\-4[0-9a-f]{3}\-[8-9a-b][0-9a-f]{3}\-[0-9a-f]{12}$/
     while (n--) {
       expect(unique()).to.match(r)
@@ -22,7 +22,7 @@ describe('unique', function() {
   })
 
   it('is unique', function() {
-    var n = 10000
+    var n = 100
     var a = []
     var u
     while (n--) {
