@@ -1,23 +1,12 @@
 {
   "name": "nd-spa",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "Single Page Application",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-spa",
-  "bugs": {
-    "url": "https://github.com/ndfront/nd-spa/issues"
-  },
-  "licenses": [
-    {}
-  ],
   "author": {
     "name": "crossjs",
     "email": "liwenfu@crossjs.com"
-  },
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ndfront/nd-spa.git"
   },
   "scripts": {
     "lint": "eslint .",
@@ -25,6 +14,15 @@
     "test": "node ./node_modules/karma/bin/karma start ./karma.conf.js",
     "test:dev": "npm run test -- --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ndfront/nd-spa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ndfront/nd-spa/issues"
+  },
+  "licenses": "MIT",
+  "main": "index.js",
   "dependencies": {
     "nd-base": "^3.0.1",
     "nd-browser": "^3.0.0",
