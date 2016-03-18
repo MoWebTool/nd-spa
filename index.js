@@ -81,32 +81,35 @@ var util = module.exports = {
  * @constant {string} ENV
  */
 util.ENV = (function() {
-  if (window.ENV && util.hasOwnProperty(window.ENV)) {
-    return util[window.ENV]
+  var env = window.ENV
+  if (env && util.hasOwnProperty(env)) {
+    return util[env]
   }
 
-  switch (util.LOC_HOSTNAME) {
+  var loc = util.LOC_HOSTNAME
+
+  switch (loc) {
     case '127.0.0.1':
       return util.SIMULATION
     case 'localhost':
       return util.PRODUCTION
     default:
-      if (/\.dev\.web\.nd$/.test(util.LOC_HOSTNAME)) {
+      if (/\.dev\.web\.nd$/.test(loc)) {
         return util.DEVELOPMENT
       }
-      if (/\.debug\.web\.nd$/.test(util.LOC_HOSTNAME)) {
+      if (/\.debug\.web\.nd$/.test(loc)) {
         return util.DEBUG
       }
-      if (/\.qa\.web\.sdp\.101\.com$/.test(util.LOC_HOSTNAME)) {
+      if (/\.qa\.web\.sdp\.101\.com$/.test(loc)) {
         return util.PRESSURE
       }
-      if (/\.beta\.web\.sdp\.101\.com$/.test(util.LOC_HOSTNAME)) {
+      if (/\.beta\.web\.sdp\.101\.com$/.test(loc)) {
         return util.PREPRODUCTION
       }
-      if (/\.aws\.101\.com$/.test(util.LOC_HOSTNAME)) {
+      if (/\.aws\.101\.com$/.test(loc)) {
         return util.AWS
       }
-      if (/\.dyejia\.cn$/.test(util.LOC_HOSTNAME)) {
+      if (/\.dyejia\.cn$/.test(loc)) {
         return util.DYEJIA
       }
       return util.PRODUCTION
