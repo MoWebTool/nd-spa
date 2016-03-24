@@ -3,22 +3,23 @@
     <li class="module{{#if active}} module-active{{/if}}" data-module="{{name}}">
       <a class="module-anchor iconfont iconfont-{{icon}}" href="/#/{{name}}"><span>{{__ title}}</span></a>
       <ul class="folders">
-      {{#each folders}}
-        <li class="folder{{#if active}} folder-active{{/if}}" data-folder="{{@index}}">
-          <a class="folder-anchor iconfont iconfont-{{icon}}" href="/#/{{../name}}/{{@index}}"><span>{{__ title}}</span></a>
-          <ul class="routes">
-            {{#each routes}}
-              <li class="route{{#if active}} route-active{{/if}}">
-                <a class="route-anchor iconfont iconfont-{{#if icon}}{{icon}}{{else}}dash{{/if}}" href="/#/{{../../name}}/{{route}}" data-route="{{../../name}}/{{route}}"><span>{{__ title}}</span></a>
-              </li>
-            {{/each}}
-          </ul>
-        </li>
-      {{/each}}
       {{#each routes}}
-        <li class="route{{#if active}} route-active{{/if}}">
-          <a class="route-anchor iconfont iconfont-{{#if icon}}{{icon}}{{else}}dash{{/if}}" href="/#/{{../name}}/{{route}}" data-route="{{../name}}/{{route}}"><span>{{__ title}}</span></a>
-        </li>
+        {{#if routes}}
+          <li class="folder{{#if active}} folder-active{{/if}}" data-folder="{{@index}}">
+            <a class="folder-anchor iconfont iconfont-{{icon}}" href="/#/{{../name}}/{{@index}}"><span>{{__ title}}</span></a>
+            <ul class="routes">
+              {{#each routes}}
+                <li class="route{{#if active}} route-active{{/if}}">
+                  <a class="route-anchor iconfont iconfont-{{#if icon}}{{icon}}{{else}}dash{{/if}}" href="/#/{{../../name}}/{{route}}" data-route="{{../../name}}/{{route}}"><span>{{__ title}}</span></a>
+                </li>
+              {{/each}}
+            </ul>
+          </li>
+        {{else}}
+          <li class="route{{#if active}} route-active{{/if}}">
+            <a class="route-anchor iconfont iconfont-{{#if icon}}{{icon}}{{else}}dash{{/if}}" href="/#/{{../name}}/{{route}}" data-route="{{../name}}/{{route}}"><span>{{__ title}}</span></a>
+          </li>
+        {{/if}}
       {{/each}}
       </ul>
     </li>
