@@ -90,9 +90,8 @@ util.ENV = (function() {
 
   switch (loc) {
     case '127.0.0.1':
-      return util.SIMULATION
     case 'localhost':
-      return util.PRODUCTION
+      return util.DEVELOPMENT
     default:
       if (/\.dev\.web\.nd$/.test(loc)) {
         return util.DEVELOPMENT
@@ -129,6 +128,10 @@ function render(msg, cb, ms, level) {
   if (typeof msg === 'string') {
     msg = {
       brief: msg
+    }
+  } else {
+    if (msg.detail === msg.brief) {
+      delete msg.detail
     }
   }
 
