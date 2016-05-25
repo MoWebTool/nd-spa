@@ -44,7 +44,7 @@ module.exports = function(config) {
           test: /\.handlebars$/,
           loader: 'handlebars'
         }]
-      },
+      }
     },
 
     webpackMiddleware: {
@@ -67,8 +67,8 @@ module.exports = function(config) {
     // optionally, configure the reporter
     coverageReporter: {
       reporters: [
-        { type : 'text-summary' },
-        { type : 'lcov', dir : 'coverage' }
+        { type: 'text-summary' },
+        { type: 'lcov', dir: 'coverage' }
       ]
     }
   })

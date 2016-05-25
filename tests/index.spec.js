@@ -10,12 +10,10 @@ var expect = chai.expect
 
 chai.use(sinonChai)
 
-/*globals describe,it*/
+/* globals describe,it*/
 
 describe('util', function() {
-
   it('APP_CORE', function() {
     expect(util.APP_CORE).to.equal('3.0.0')
   })
-
 })

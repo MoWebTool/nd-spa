@@ -12,7 +12,7 @@ var expect = chai.expect
 
 chai.use(sinonChai)
 
-/*globals describe,it,before,after*/
+/* globals describe,it,before,after*/
 
 describe('REST', function() {
   var superagentMock
@@ -31,7 +31,7 @@ describe('REST', function() {
     return new REST({
       baseUri: ['http://127.0.0.1:9876', 'v0.1', 'test']
     }).GET(1).then(function(data) {
-      expect(data).to.deep.equal({a:1,b:2})
+      expect(data).to.deep.equal({a: 1, b: 2})
     })
   })
 
@@ -43,5 +43,4 @@ describe('REST', function() {
   after(function() {
     superagentMock.unset()
   })
-
 })

@@ -118,7 +118,7 @@ util.ENV = (function() {
 var debug = require('nd-debug')
 var Message = require('nd-message')
 
-/*eslint max-params: [2, 4]*/
+/* eslint max-params: [2, 4]*/
 function render(msg, cb, ms, level) {
   if (typeof cb === 'number') {
     ms = cb
