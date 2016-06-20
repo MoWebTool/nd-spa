@@ -1,12 +1,12 @@
 <ul class="nav">
   {{#each modules}}
     <li class="module{{#if active}} module-active{{/if}}" data-module="{{name}}">
-      <a class="module-anchor iconfont iconfont-{{icon}}" href="/#/{{name}}"><span>{{__ title}}</span></a>
+      <a class="module-anchor iconfont iconfont-{{icon}}"><span>{{__ title}}</span></a>
       <ul class="folders">
       {{#each routes}}
         {{#if routes}}
           <li class="folder{{#if active}} folder-active{{/if}}" data-folder="{{@index}}">
-            <a class="folder-anchor iconfont iconfont-{{icon}}" href="/#/{{../name}}/{{@index}}"><span>{{__ title}}</span></a>
+            <a class="folder-anchor iconfont iconfont-{{icon}}"><span>{{__ title}}</span></a>
             <ul class="routes">
               {{#each routes}}
                 <li class="route{{#if active}} route-active{{/if}}">
