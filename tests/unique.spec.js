@@ -1,16 +1,10 @@
 'use strict'
 
 var chai = require('chai')
-var sinonChai = require('sinon-chai')
+var expect = chai.expect
 var unique = require('../lib/unique')
 
-var expect = chai.expect
-// var sinon = window.sinon
-
-chai.use(sinonChai)
-
 /* globals describe,it*/
-
 describe('unique', function() {
   it('is uuid', function() {
     var n = 100

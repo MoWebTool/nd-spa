@@ -28,8 +28,8 @@ describe('REST', function() {
   it('restful verbs: GET', function() {
     expect(new REST()).to.have.property('GET')
     expect(new REST()).to.not.have.ownProperty('GET')
-    return new REST({
-      baseUri: ['http://127.0.0.1:9876', 'v0.1', 'test']
+    new REST({
+      baseUri: ['http://localhost:9876', 'v0.1', 'test']
     }).GET(1).then(function(data) {
       expect(data).to.deep.equal({a: 1, b: 2})
     })

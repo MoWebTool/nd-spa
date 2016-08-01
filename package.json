@@ -60,6 +60,7 @@
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "url-loader": "^0.5.7",
+    "superagent-mock": "^1.10.0",
     "webpack": "^1.12.14",
     "yargs": "^4.2.0"
   }
